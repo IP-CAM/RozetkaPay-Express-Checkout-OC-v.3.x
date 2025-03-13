@@ -1,0 +1,65 @@
+@font-face {
+  font-family: 'Rozetka306 Bold';
+  src: url('fonts/rozetka306web-bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rozetka306 Bold';
+  src: url('fonts/rozetka306web-bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+.btn-rozetka {
+	font-family: 'Rozetka306 Bold', sans-serif;
+	font-weight: 500;
+	font-size: 21px;
+	line-height: 43px;
+	background: #000;
+	border: 0;
+	padding: 8px 55px;
+	display: flex;
+	border-radius: 7px;
+}
+.btn-rozetka img {
+	margin: 0 ;
+}
+.btn-rozetka:hover,
+.btn-rozetka:focus,
+.btn-rozetka:hover:focus,
+.btn-rozetka:hover:active {
+	color: #fff;
+	background-color: #000;
+	border: 0;
+	outline: none;
+}
+.demo-button {
+	display: flex;
+	justify-content: center;
+	padding-top: 50px;
+	padding-bottom: 50px;
+} 
+.btn-rozetka.mini {
+	flex-direction: column;
+	padding: 9px 55px;
+}
+.btn-rozetka.mini img {
+	margin: 4px 0 4px 0px;
+}
+.demo-button.white {
+	background-color: #000;
+}
+.white .btn-rozetka {
+	background-color: #fff;
+	color: #000;
+}
+.btn-rozetka.white:hover,
+.btn-rozetka.white:focus,
+.btn-rozetka.white:hover:focus,
+.btn-rozetka.white:hover:active {
+	background-color: #fff;
+	color: #000;
+	outline: none;
+}

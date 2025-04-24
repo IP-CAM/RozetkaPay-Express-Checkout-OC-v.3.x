@@ -115,7 +115,7 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 	/**
      * Отримання, верифікація та обробка колбека від платіжної системи
      */
-	public function callback() {				
+	public function callback() {		
 		$result = $this->convertToObjectArray($this->rpay->callbacks());
 
 		if(!$result) {
@@ -130,13 +130,14 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 			$order_status_id = 0;
 			
 			if(!empty($result['is_success']) && $result['is_success']) {
-				//замовлення успішно оплачено, заповнюємо його дані
-	
-				if($result['operation'] == 'payment') {
+				$status_code = $result['details']['status_code'] ?? '';
+				
+				//замовлення успішно оплачено, заповнюємо його дані або оплата частинами
+				if($result['operation'] == 'payment' || $status_code == 'transaction_successful') {
 					$order_id = $this->model_extension_module_rozetka_ec->setOrderData($result);
 					
 					$order_status_id = $this->config->get('module_rozetka_ec_order_status_id');
-				} 
+				}
 				
 				//повернення
 				if($result['operation'] == 'refund') {
@@ -145,6 +146,11 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 					$order_status_id = $this->config->get('module_rozetka_ec_order_refund_status_id');
 				}
 				
+			} elseif(!empty($result['purchase_details'][0]['status_code']) && $result['purchase_details'][0]['status_code'] == 'order_with_postpayment_confirmed') {				
+				//Оплата при отриманні
+				$order_id = $this->model_extension_module_rozetka_ec->setOrderData($result);
+					
+				$order_status_id = $this->config->get('module_rozetka_ec_order_post_pay_status_id');
 			} else {				
 				//Невдала оплата замовлення
 				$order_id = $this->model_extension_module_rozetka_ec->setOrderData($result);
@@ -181,7 +187,7 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 	/**
      * Метод перевірки успішності оплати по API
      * 
-     * @param int $order_id Ідентифікатор замовлення
+     * @param int $order_id Ідентифікатор замовлення, також є перевірка чи це не замовлення з післясплатою
      * @return bool повертає true або false
      */
 	public function checkStatusPay() {
@@ -190,11 +196,17 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 		$order_id = !empty($this->request->get['order_id']) ? $this->request->get['order_id'] : false;
 		
 		$result = $this->convertToObjectArray($this->rpay->paymentInfo((string)$order_id));
-	
+
 		if(!empty($result[0]) && !empty($order_id)) {
 			$json['status'] = true;
-		} else {			
+		} else {
 			$json['status'] = false;
+			
+			$order_postpayment = $this->model_extension_module_rozetka_ec->checkOrderPostpayment($order_id);
+			
+			if($order_postpayment) {
+				$json['status'] = true;
+			}
 		}
 		
 		$this->response->addHeader('Content-Type: application/json');
@@ -233,7 +245,7 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
      */
 	private function getButtonPay() {
 		$color = $this->config->get('module_rozetka_ec_button_color');
-		$variant = $this->config->get('module_rozetka_ec_button_variant');
+		$variant = 'variant_2';
 		$image_path = 'catalog/view/theme/default/image/payment/rozetka_ec/';
 		
 		$data['button_text'] = $this->language->get('text_button_default');

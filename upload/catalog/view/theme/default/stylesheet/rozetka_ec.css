@@ -1,29 +1,29 @@
 @font-face {
-  font-family: 'Rozetka306 Bold';
-  src: url('../fonts/rozetka306web-bold.otf') format('opentype');
+  font-family: 'Montserrat Bold';
+  src: url('../fonts/montserrat-bold.ttf') format('opentype');
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Rozetka306 Bold';
-  src: url('../fonts/rozetka306web-bold.ttf') format('truetype');
-  font-weight: bold;
+  font-family: 'Montserrat';
+  src: url('../fonts/montserrat-regular.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
 }
 
 .btn-rozetka {
-	font-family: 'Rozetka306 Bold', sans-serif;
-	font-weight: 500;
-    font-size: 17px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
     line-height: 32px;
     width: 100%;
-    background: #000;
+    background: #221F1F;
     border: 0;
-    padding: 8px 55px;
+    padding: 12px 32px;
     display: flex;
     justify-content: center;
-	border-radius: 4px;
+    border-radius: 6px;
 }
 .btn-rozetka img {
 	margin: 0;
@@ -42,7 +42,7 @@
 .btn-rozetka:hover:focus,
 .btn-rozetka:hover:active {
 	color: #fff;
-	background: #000;
+	background: #221F1F;
 	opacity: .9;
 	border: 0;
 	outline: none;
@@ -62,7 +62,7 @@
 	color: #000;
 	outline: none;
 }
-#button-cart + .btn-rozetka {margin-top:10px;}
+#button-cart + .btn-rozetka {margin-top: 16px;}
 .buttons + .btn-rozetka {
     margin-top:15px;
     margin-top: 0;

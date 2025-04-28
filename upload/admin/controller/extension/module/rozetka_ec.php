@@ -44,7 +44,7 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 			$this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', true));
 		}
 		
-		$this->document->addStyle('view/stylesheet/rozetka_ec.css');
+		$this->document->addStyle('view/stylesheet/rozetka_ec.css?v=1.0.2');
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -107,13 +107,13 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 			'order_fail_status_id',
 			'order_success_hold_status_id',
 			'order_refund_status_id',
+			'order_post_pay_status_id',
 			'status',
 			'status_log',
 			'button_color',
 			'button_css',
 			'button_cart',
 			'button_cart_js',
-			'button_variant',
 			'position_button_cart_js',
 			'button_product',
 			'position_button_product_js',
@@ -178,12 +178,6 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 			'before'	=> $this->language->get('text_before'),
 			'append'	=> $this->language->get('text_append'),
 			'after'		=> $this->language->get('text_after'),
-		);
-		
-		$data['variants'] = array(
-			'variant_1'	=> $this->language->get('text_variant_1'),
-			'variant_2'	=> $this->language->get('text_variant_2'),
-			'variant_3'	=> $this->language->get('text_variant_3')
 		);
 		
 		if ($this->request->server['HTTPS']) {
@@ -378,8 +372,6 @@ class ControllerExtensionModuleRozetkaEc extends Controller {
 					} else {
 						$server = HTTP_CATALOG;
 					}
-					
-					$dataCheckout->callback_url = $server . 'index.php?route=extension/module/rozetka_ec/callback';
 					
 					$result = $this->convertToObjectArray($this->rpay->paymentRefund($dataCheckout));
 					

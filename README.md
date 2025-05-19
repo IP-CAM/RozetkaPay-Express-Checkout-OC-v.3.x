@@ -1,1 +1,1 @@
-# RozetkaPay Express checkout opencart-3.x
+# Buy with RozetkaPay checkout opencart-3.x

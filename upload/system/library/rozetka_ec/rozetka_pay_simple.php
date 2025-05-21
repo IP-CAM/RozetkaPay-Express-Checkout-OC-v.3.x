@@ -59,7 +59,7 @@ class RozetkaPayCheckout {
     public function getHeaderSignature() {
 
         foreach (getallheaders() as $key => $value) {
-            if ($key === "X-ROZETKAPAY-SIGNATURE") {
+            if ((strcasecmp($key, 'X-Rozetkapay-Signature') === 0)) {
                 return $value;
             }
         }
